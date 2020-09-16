@@ -1,5 +1,13 @@
-import create_iso
-from create_iso import Utils
+import testing
+from testing import Tests
 
-Utils.write_iso()
+
+import pycdlib
+import sys
+try:
+    from cStringIO import StringIO as BytesIO
+except ImportError:
+    from io import BytesIO
+
+Tests.run_tests()
 

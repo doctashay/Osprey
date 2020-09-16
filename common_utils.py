@@ -1,4 +1,5 @@
 import pycdlib
+import sys
 try:
     from cStringIO import StringIO as BytesIO
 except ImportError:
@@ -27,6 +28,12 @@ class Utils(object):
 
         #Close PyCdLib object
         iso.close()
+    def open_iso():
+        iso = pycdlib.PyCdlib()
+        iso.open("C:\iso.iso") #Hardcoded for now
 
+        for child in iso.list_children(iso_path='/'):
+            print(child.file_identifier())
 
+        iso.close()
 
