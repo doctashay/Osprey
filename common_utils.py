@@ -1,5 +1,6 @@
 import pycdlib
 import sys
+import time
 try:
     from cStringIO import StringIO as BytesIO
 except ImportError:
@@ -36,4 +37,20 @@ class Utils(object):
             print(child.file_identifier())
 
         iso.close()
+    def modify_iso():
+        iso = pycdlib.PyCdlib()
+        iso.new()
+        foostr = b'foo\n'
+        iso.add_fp(BytesIO(foostr), len(foostr), '/FOO.;1')
+        outiso = BytesIO()
+        iso.write_fp(outiso)
+        iso.close()
 
+        iso.open_fp(outiso)
+
+        bazstr = b'bazzzzzz\n'
+        iso.modify_file_in_place(BytesIO(bazstr), len(bazstr), '/FOO.;1')
+
+        modifiediso = BytesIO()
+        iso.write_fp(modifiediso)
+        iso.close()

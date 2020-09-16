@@ -1,6 +1,6 @@
 import testing
+import time
 from testing import Tests
-
 
 import pycdlib
 import sys
@@ -9,5 +9,4 @@ try:
 except ImportError:
     from io import BytesIO
 
-Tests.run_tests()
-
+Tests.run_tests();

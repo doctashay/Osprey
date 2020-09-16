@@ -20,6 +20,7 @@ Main PyCdlib class and support classes and utilities.
 
 from __future__ import absolute_import
 
+import time
 import bisect
 import collections
 import inspect
@@ -704,6 +705,8 @@ class PyCdlib(object):
             curr_extent = self._cdfp.tell() // 2048
             vd = self._cdfp.read(2048)
             if len(vd) != 2048:
+                print(len(vd))
+                time.sleep(5)
                 raise pycdlibexception.PyCdlibInvalidISO('Failed to read entire volume descriptor')
             (desc_type, ident) = struct.unpack_from('=B5s', vd, 0)
             if desc_type not in (headervd.VOLUME_DESCRIPTOR_TYPE_PRIMARY,
@@ -4531,6 +4534,8 @@ class PyCdlib(object):
         new_num_extents = utils.ceiling_div(length, self.logical_block_size)
 
         if old_num_extents != new_num_extents:
+            print(old_num_extents) ##testing
+            print(new_num_extents) ##testing 
             raise pycdlibexception.PyCdlibInvalidInput('When modifying a file in-place, the number of extents for a file cannot change!')
 
         if not child.is_file():
