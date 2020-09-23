@@ -31,7 +31,7 @@ class Utils(object):
         iso.close()
     def open_iso():
         iso = pycdlib.PyCdlib()
-        iso.open("C:\iso.iso") #Hardcoded for now
+        iso.open("C:\\new.iso") #Hardcoded for now
 
         for child in iso.list_children(iso_path='/'):
             print(child.file_identifier())
@@ -39,14 +39,7 @@ class Utils(object):
         iso.close()
     def modify_iso():
         iso = pycdlib.PyCdlib()
-        iso.new()
-        foostr = b'foo\n'
-        iso.add_fp(BytesIO(foostr), len(foostr), '/FOO.;1')
-        outiso = BytesIO()
-        iso.write_fp(outiso)
-        iso.close()
-
-        iso.open_fp(outiso)
+        iso.open_fp("C:\\new.iso")
 
         bazstr = b'bazzzzzz\n'
         iso.modify_file_in_place(BytesIO(bazstr), len(bazstr), '/FOO.;1')
