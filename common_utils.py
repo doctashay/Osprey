@@ -8,42 +8,54 @@ except ImportError:
 
 
 class Utils(object):
-    def write_iso():
-        print("Creating basic ISO")
-        #Create new PyCdLib object
+    def create_and_modify():
+        #Create new ISO file with starting file FOO
         iso = pycdlib.PyCdlib()
         iso.new()
-
-        #Add file to ISO with data passed from foostr.
         foostr = b'foo\n'
-        iso.add_fp(BytesIO(foostr), len(foostr), '/FOO.;1') 
+        iso.add_fp(BytesIO(foostr), len(foostr), '/FOO.;1')
 
-        #Create new directory inside the ISO file
-        iso.add_directory('/TEST')
-
-        #Add file to new directory /TEST/ with data passed from foostr
-        iso.add_fp(BytesIO(foostr), len(foostr), '/TEST/FOO.;1') 
-
-        #Master the ISO file and output to build directory
-        iso.write('new.iso') 
-
-        #Close PyCdLib object
+        outiso = BytesIO()
+        iso.write_fp(outiso)
+        iso.write("C:\\test.iso")
         iso.close()
-    def open_iso():
+
+        #Modify file FOO with data from bazstr
         iso = pycdlib.PyCdlib()
-        iso.open("C:\\new.iso") #Hardcoded for now
-
-        for child in iso.list_children(iso_path='/'):
-            print(child.file_identifier())
-
-        iso.close()
-    def modify_iso():
-        iso = pycdlib.PyCdlib()
-        iso.open_fp("C:\\new.iso")
-
-        bazstr = b'bazzzzzz\n'
+        iso.open_fp(outiso)
+        bazstr = b'feelsgoodman\n'
         iso.modify_file_in_place(BytesIO(bazstr), len(bazstr), '/FOO.;1')
 
         modifiediso = BytesIO()
         iso.write_fp(modifiediso)
+
+        #It works! I think?
+        iso.write("C:\\test.iso")
+        iso.close()
+    def test_jak():
+        #Test writing data to a Jak and Daxter ISO file
+        iso = pycdlib.PyCdlib()
+        iso.open("C:\\jak.iso") #Hardcoded for now
+
+        print("Getting ISO Contents")
+        for child in iso.list_children(iso_path='/'):
+            print(child.file_identifier())
+
+        #Throws an ISO padding exception when attempting to call modify method, disabled for now
+        #bazzstr = b''
+        #iso.modify_file_in_place(BytesIO(bazzstr), len(bazzstr), b'/TEXT/0COMMON.TXT')
+
+        #outiso = BytesIO()
+        #iso.write_fp(outiso)
+        #iso.write("C:\\jak.iso")
+        iso.close()
+    def list_contents():
+        #Test command line arguments for a given ISO file. Just lists file contents for now
+        iso = pycdlib.PyCdlib()
+        iso.open(sys.argv[1])
+
+        print("Getting Test ISO Contents")
+        for child in iso.list_children(iso_path='/'):
+            print(child.file_identifier())
+
         iso.close()
