@@ -126,3 +126,5 @@ dmypy.json
 .pyre/
 *.iso
 
+obj/Debug/Osprey.pyproj.CoreCompileInputs.cache
+obj/Debug/Osprey.pyproj.FileListAbsolute.txt
