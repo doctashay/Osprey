@@ -35,9 +35,10 @@ class Utils(object):
     def test_jak():
         #Test writing data to a Jak and Daxter ISO file
         iso = pycdlib.PyCdlib()
-        iso.open("C:\\jak.iso") #Hardcoded for now
+        isopath = "C:\\jak.iso" #Hardcoded for now
+        iso.open(isopath) 
 
-        print("Getting ISO Contents")
+        print("Getting ISO Contents for", isopath)
         for child in iso.list_children(iso_path='/'):
             print(child.file_identifier())
 
@@ -52,9 +53,12 @@ class Utils(object):
     def list_contents():
         #Test command line arguments for a given ISO file. Just lists file contents for now
         iso = pycdlib.PyCdlib()
+        isopath = "C:\\jakx.iso"
+        sys.argv[1] = isopath #Hardcoded for now
         iso.open(sys.argv[1])
 
-        print("Getting Test ISO Contents")
+
+        print("Listing ISO contents for ", isopath)
         for child in iso.list_children(iso_path='/'):
             print(child.file_identifier())
 
