@@ -20,6 +20,9 @@ class Utils(object):
         iso.write("C:\\test.iso")
         iso.close()
 
+        print('ISO created.')
+        input("Press enter to continue...")
+
         #Modify file FOO with data from bazstr
         iso = pycdlib.PyCdlib()
         iso.open_fp(outiso)
@@ -35,20 +38,22 @@ class Utils(object):
     def test_jak():
         #Test writing data to a Jak and Daxter ISO file
         iso = pycdlib.PyCdlib()
-        isopath = "C:\\jak.iso" #Hardcoded for now
-        iso.open(isopath) 
+        iso.open(sys.argv[1])
+        isopath = sys.argv[1]
 
         print("Getting ISO Contents for", isopath)
         for child in iso.list_children(iso_path='/'):
             print(child.file_identifier())
 
         #Throws an ISO padding exception when attempting to call modify method, disabled for now
-        #bazzstr = b''
-        #iso.modify_file_in_place(BytesIO(bazzstr), len(bazzstr), b'/TEXT/0COMMON.TXT')
+        bazzstr = b'aaa'
+        iso.modify_file_in_place(BytesIO(bazzstr), len(bazzstr), b'/TEXT/0COMMON.TXT;1')
 
-        #outiso = BytesIO()
-        #iso.write_fp(outiso)
-        #iso.write("C:\\jak.iso")
+        outiso = BytesIO()
+        iso.write_fp(outiso)
+        iso.write("C:\\jak1.iso")
+
+        #iso.write_fp("C:\\jak.iso")
         iso.close()
     def list_contents():
         #Test command line arguments for a given ISO file. Just lists file contents for now
